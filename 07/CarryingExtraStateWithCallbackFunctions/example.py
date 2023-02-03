@@ -19,7 +19,16 @@ def add(x, y):
 
 
 def print_result(result:Any) -> None:
-    print(f"Got: {result}")
+    print(f"Result: {result}")
+
+
+class ResultHandler:
+    def __init__(self):
+        self.sequence = 0
+
+    def handler(self, result):
+        self.sequence += 1
+        print(f"[{self.sequence}] Result: {result}")
 
 
 def main():
@@ -28,7 +37,13 @@ def main():
     print("-*- Simple Example -*-")
     print("-*------------------*-")
     apply_async(add, (2, 3), callback=print_result)
-    apply_async(add, ("hello", "world"), callback=print_result)
+    apply_async(add, ("hello", " world"), callback=print_result)
+    print("-*--------------------------*-")
+    print("-*- Using a bounded-method -*-")
+    print("-*--------------------------*-")
+    result = ResultHandler()
+    apply_async(add, (2, 3), callback=result.handler)
+    apply_async(add, ("hello", " world"), callback=result.handler)
 
 
 if __name__ == "__main__":
