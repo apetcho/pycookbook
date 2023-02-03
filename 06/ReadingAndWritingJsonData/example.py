@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from collections import OrderedDict
 import json
+from typing import Dict
 
 
 def _get_data() -> str:
@@ -43,8 +44,27 @@ def _encoding_instances():
 
 
 
+# -*-
+classes = {"Point": Point}
+
+def _deserialize_object(dct:Dict):
+    clsname = dct.pop("__classname__", None)
+    if clsname:
+        cls = classes[clsname]
+        obj = cls.__new__(cls)
+        for key, value in dct.items():
+            setattr(obj, key, value)
+        return obj
+    else:
+        return dct
+
 def _decoding_instances():
-    pass
+    pt = Point(3, 4)
+    s = json.dumps(pt, default=_serialize_instance)
+    data = json.loads(s, object_hook=_deserialize_object)
+    print()
+    print(data)
+    print(f"{data.x}, {data.y}")
 
 
 def main():
