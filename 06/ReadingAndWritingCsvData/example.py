@@ -21,7 +21,13 @@ def _read_as_tuples():
 
 
 def _read_as_namedtuples():
-    pass
+    print("\nReading as namedtuples")
+    with open(_get_filename()) as fp:
+        reader = csv.reader(fp)
+        Row = namedtuple("Row", next(reader))
+        for line in reader:
+            row = Row(*line)
+            print(f"    {row}")
 
 
 def _read_as_dictionaries():
