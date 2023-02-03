@@ -51,6 +51,23 @@ def main():
     print(dct["x"])
     del dct["x"]
 
+    print("-*------------------------------*-")
+    print("-*- SetOnceDefaultDict Example -*-")
+    print("-*------------------------------*-")
+    from collections import defaultdict
+
+    class SetOnceDefaultDict(SetOnceMappingMixin, defaultdict):
+        pass
+
+    dct = SetOnceDefaultDict(list)
+    dct["x"].append(2)
+    dct["y"].append(3)
+    dct["z"].append(10)
+    try:
+        dct["x"] = 23
+    except KeyError as err:
+        print(err)
+
 
 if __name__ == "__main__":
     main()
