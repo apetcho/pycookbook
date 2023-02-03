@@ -23,9 +23,24 @@ def _using_json_to_populate_an_instance():
     print(data.shares)
     print(data.price)
 
+# -*-
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+def _serialize_instance(obj):
+    dct = {"__classname__": type(obj).__name__}
+    dct.update(vars(obj))
+    return dct
 
 def _encoding_instances():
-    pass
+    print()
+    point = Point(3, 4)
+    data = json.dumps(point, default=_serialize_instance)
+    print(data)
+
 
 
 def _decoding_instances():
