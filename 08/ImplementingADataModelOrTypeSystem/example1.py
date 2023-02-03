@@ -117,11 +117,27 @@ def main():
     print("-*- Class with descriptors -*-")
     print("-*--------------------------*-")
 
-    class Stock:
+    class Stock(ChecedMeta):
         # -*- Specify constrains -*-
         name = SizedString("name", size=8)
         shares = UnsignedInteger("shares")
         price = UnsignedFloat("price")
+
+        def __init__(self, name, shares, price):
+            self.name = name
+            self.shares = shares
+            self.price = price
+
+    stock = Stock("ACME", 50, 91.1)
+    test(stock)
+
+    print("-*------------------------*-")
+    print("-*- Class with metaclass -*-")
+    print("-*------------------------*-")
+    class Stock(ChecedMeta):
+        name = SizedString(size=8)
+        shares = UnsignedInteger()
+        price = UnsignedFloat()
 
         def __init__(self, name, shares, price):
             self.name = name
