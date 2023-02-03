@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+from collections import defaultdict
+from collections import OrderedDict
+
 
 class LoggedMappingMixin:
     """Add logging to get/set/delete operations for debugging."""
@@ -54,7 +57,7 @@ def main():
     print("-*------------------------------*-")
     print("-*- SetOnceDefaultDict Example -*-")
     print("-*------------------------------*-")
-    from collections import defaultdict
+    
 
     class SetOnceDefaultDict(SetOnceMappingMixin, defaultdict):
         pass
@@ -68,6 +71,26 @@ def main():
     except KeyError as err:
         print(err)
 
+    print("-*-----------------------------*-")
+    print("-*- StringOrderedDict example -*-")
+    print("-*-----------------------------*-")
+
+    class StringOrderedDict(
+        StringKeysMappingMixin, SetOnceMappingMixin, OrderedDict):
+        pass
+
+    dct = StringOrderedDict()
+    dct["x"] = 23
+    try:
+        dct[42] = 10
+    except TypeError as err:
+        print(err)
+    
+    try:
+        dct["x"] = 42
+    except KeyError as err:
+        print(err)
+        
 
 if __name__ == "__main__":
     main()
