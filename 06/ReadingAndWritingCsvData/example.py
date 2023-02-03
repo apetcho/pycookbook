@@ -39,7 +39,17 @@ def _read_as_dictionaries():
 
 
 def _read_into_tuple_with_type_conversion():
-    pass
+    print("\nReading into named tuples with type conversion")
+    coltypes = [str, float, str, str, float, int]
+    with open(_get_filename()) as fp:
+        reader = csv.reader(fp)
+        headers = next(reader)
+        for row in reader:
+            # -*- Apply conversion to row items
+            row = tuple(
+                convert(value) for convert, value in zip(coltypes, row)
+            )
+            print(row)
 
 
 def _convert_selected_dict_fields():
