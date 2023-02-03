@@ -15,6 +15,15 @@ def better_spam(b:Optional[List]=None):
     return b
 
 
+_no_value = object()
+
+def test_spam(b=_no_value):
+    if b is _no_value:
+        print("No b value supplied")
+    else:
+        print(f"b={b}")
+
+
 def main():
     """Main entry."""
     a = spam()
@@ -32,6 +41,12 @@ def main():
     b = better_spam()
     print(b)
     print('-'*10)
+    # -*- (c) Example of testing if an argument was supplied or not -*-
+    test_spam()
+    test_spam(None)
+    test_spam(0)
+    test_spam([])
+
 
 
 if __name__ == "__main__":
