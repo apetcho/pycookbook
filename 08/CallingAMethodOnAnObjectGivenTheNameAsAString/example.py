@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import math
+import operator
 
 
 class Point:
@@ -22,7 +23,11 @@ def main():
     print("-*-------------------------*-")
     dist = getattr(point, "distance")(0, 0)
     print(f"distance = {dist}")
-
+    print("-*------------------------------*-")
+    print("-*- Method 2: Use methodcaller -*-")
+    print("-*------------------------------*-")
+    dist = operator.methodcaller("distance", 0, 0)(point)
+    print(f"distance = {dist}")
 
 if __name__ == "__main__":
     main()
