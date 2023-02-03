@@ -11,9 +11,17 @@ def _turning_json_into_an_ordereddict():
     data = json.loads(_get_data(), object_pairs_hook=OrderedDict)
     print(data)
 
+# -*-
+class JSONObject:
+    def __init__(self, dct):
+        self.__dict__ = dct
 
 def _using_json_to_populate_an_instance():
-    pass
+    print()
+    data = json.loads(_get_data(), object_hook=JSONObject)
+    print(data.name)
+    print(data.shares)
+    print(data.price)
 
 
 def _encoding_instances():
