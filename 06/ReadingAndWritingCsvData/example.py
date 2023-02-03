@@ -31,7 +31,11 @@ def _read_as_namedtuples():
 
 
 def _read_as_dictionaries():
-    pass
+    print("\nReading as dicts")
+    with open(_get_filename()) as fp:
+        reader = csv.DictReader(fp)
+        for row in reader:
+            print(f"    {row}")
 
 
 def _read_into_tuple_with_type_conversion():
