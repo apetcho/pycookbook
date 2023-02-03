@@ -31,6 +31,16 @@ class ResultHandler:
         print(f"[{self.sequence}] Result: {result}")
 
 
+def make_handler():
+    sequence = 0
+    def handler(result):
+        nonlocal sequence
+        sequence += 1
+        print(f"[{sequence}] Result: {result}")
+
+    return handler
+
+
 def main():
     # -*- (a) A simple callback example -*-
     print("-*------------------*-")
@@ -44,6 +54,13 @@ def main():
     result = ResultHandler()
     apply_async(add, (2, 3), callback=result.handler)
     apply_async(add, ("hello", " world"), callback=result.handler)
+    # -*- (c) Using a closure
+    print("-*-------------------*-")
+    print("-*- Using a closure -*-")
+    print("-*-------------------*-")
+    handler = make_handler()
+    apply_async(add, (2, 3), callback=handler)
+    apply_async(add, ("hello", " world"), callback=handler)
 
 
 if __name__ == "__main__":
