@@ -13,13 +13,22 @@ def _sighandler(num, args):
 
 class RPCHandler:
     def __init__(self):
-        pass
+        self._functions = {}
 
     def register_function(self, fun):
-        pass
+        self._functions[fun.__name__] = fun
 
     def handler_connection(self, connection):
-        pass
+        try:
+            while True:
+                fun_name, args, kwargs = pickle.loads(connection.recv())
+                try:
+                    result = self._functions[fun_name](*args, **kwargs)
+                    connection.send(pickle.dumps(result))
+                except Exception as err:
+                    connection.send(pickle.dumps(err))
+        except EOFError:
+            pass
 
 
 def rpc_server(handler:RPCHandler, address, authkey):
@@ -31,19 +40,24 @@ def rpc_server(handler:RPCHandler, address, authkey):
         thd.daemon = True
         thd.start()
 
+# -*-
+def add(x, y):
+    return x + y
+
+
+def sub(x, y):
+    return x - y
+
 
 # -*-
 
 def main():
     """Main entry."""
     signal.signal(signal.SIGINT, _sighandler)
-    functions = {}
-    functions["add"] = (lambda x, y: x + y)
-    functions["sub"] = (lambda x, y: x - y)
     # -*-
     handler = RPCHandler()
-    handler.register_function(functions["add"])
-    handler.register_function(functions["sub"])
+    handler.register_function(add)
+    handler.register_function(sub)
     # -*-
     rpc_server(handler, ("localhost", 17000), authkey=b"peekaboo")
 
