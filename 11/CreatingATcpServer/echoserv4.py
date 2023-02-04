@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+from socketserver import StreamRequestHandler, TCPServer
+import socket
+
+
+class EchoHandler(StreamRequestHandler):
+    timeout = 5
+    rbufsize = -1
+    wbufsize = 0
+    disable_nagle_algorithm = False
+
+    def handle(self) -> None:
+        print(f"Got connection from {self.client_address}")
+        try:
+            for line in self.rfile:
+                self.wfile.write(line)
+        except socket.timeout:
+            print("Timed out!")
+
+
+def main():
+    """Main entry."""
+    server = TCPServer(("", 20000), EchoHandler)
+    print("Echo server running on port 20000")
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
