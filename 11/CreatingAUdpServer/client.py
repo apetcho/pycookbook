@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_DGRAM
 
 
 def main():
     """Main entry."""
-    sock = socket(AF_INET, SOCK_STREAM)
+    sock = socket(AF_INET, SOCK_DGRAM)
     sock.sendto(b"", ("localhost", 20000))
     print(sock.recvfrom(8192))
 
