@@ -4,6 +4,7 @@ import sys
 import time
 import socket
 import tkinter as tk
+import tkinter.messagebox as mbox
 from threading import Thread
 from typing import Dict, List, Optional
 
@@ -108,6 +109,32 @@ class Network:
             thd = Thread(target=Network.handle_client, args=(clientsock,))
             thd.daemon = True
             thd.start()
+
+
+class GetfileForm(Form):
+    def __init__(self, oneshot=False):
+        self._root = root = tk.Tk()
+        root.wm_title("Getfile App")
+        labels = ["Server Name", "Port Number", "File Name", "Local Dir?"]
+        Form.__init__(self, labels, root)
+        self.oneshot = oneshot
+        self._host = labels[0]
+        self._port = labels[1]
+        self._filename = labels[2]
+        self._localdir = labels[3]
+
+    def on_submit(self):
+        Form.on_submit(self)
+        localdir = self.content[self._localdir].get()
+        portnum = int(self.content[self._port].get())
+        server = self.content[self._host].get()
+        filename = self.content[self._filename].get()
+        if localdir:
+            os.chdir(localdir)
+        Network.handle_client(server, portnum, filename)
+        mbox.showinfo("GetFileApp", "Download complete")
+        if self.oneshot:
+            self._root.quit()
 
 
 def netdemo():
